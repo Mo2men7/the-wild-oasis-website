@@ -10,6 +10,7 @@ const nextConfig = {
       },
     ],
   },
+  // output: "export", // to export it as static assets that we can deploy anywhere
 };
 
 export default nextConfig;
