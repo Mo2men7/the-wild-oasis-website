@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+// we will not use the build-in searchParams prop as it's a client copmonent
 function Filter() {
   const searchParams = useSearchParams();
   const router = useRouter();
