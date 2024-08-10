@@ -16,7 +16,7 @@ export async function getCabin(id) {
   // await new Promise((res) => setTimeout(res, 1000));
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     notFound(); //a build-in function
   }
 
@@ -31,7 +31,7 @@ export async function getCabinPrice(id) {
     .single();
 
   if (error) {
-    console.error(error);
+    // console.error(error);
   }
 
   return data;
@@ -44,7 +44,7 @@ export const getCabins = async function () {
     .order("name");
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Cabins could not be loaded");
   }
 
@@ -71,7 +71,7 @@ export async function getBooking(id) {
     .single();
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not get loaded");
   }
 
@@ -89,7 +89,7 @@ export async function getBookings(guestId) {
     .order("startDate");
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Bookings could not get loaded");
   }
 
@@ -109,7 +109,7 @@ export async function getBookedDatesByCabinId(cabinId) {
     .or(`startDate.gte.${today},status.eq.checked-in`);
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Bookings could not get loaded");
   }
 
@@ -130,7 +130,7 @@ export async function getSettings() {
   const { data, error } = await supabase.from("settings").select("*").single();
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Settings could not be loaded");
   }
 
@@ -156,7 +156,7 @@ export async function createGuest(newGuest) {
   const { data, error } = await supabase.from("guests").insert([newGuest]);
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Guest could not be created");
   }
 
@@ -164,19 +164,12 @@ export async function createGuest(newGuest) {
 }
 
 export async function createBooking(newBooking) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .insert([newBooking])
-    // So that the newly created object gets returned!
-    .select()
-    .single();
+  const { error } = await supabase.from("bookings").insert([newBooking]);
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not be created");
   }
-
-  return data;
 }
 
 /////////////
@@ -192,7 +185,7 @@ export async function updateGuest(id, updatedFields) {
     .single();
 
   if (error) {
-    // console.error(error);
+    console.error(error);
     throw new Error("Guest could not be updated");
   }
   return data;
@@ -207,7 +200,7 @@ export async function updateBooking(id, updatedFields) {
     .single();
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not be updated");
   }
   return data;
@@ -220,7 +213,7 @@ export async function deleteBooking(id) {
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
   if (error) {
-    console.error(error);
+    // console.error(error);
     throw new Error("Booking could not be deleted");
   }
   return data;

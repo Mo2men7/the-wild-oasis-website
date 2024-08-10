@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
 import {
+  createBooking,
   deleteBooking,
   getBookings,
   updateBooking,
@@ -34,7 +35,7 @@ export async function updateGuestAction(formData) {
   revalidatePath("/account/profile");
 }
 
-export async function deleteReservationAction(bookingId) {
+export async function deleteBookingAction(bookingId) {
   const session = await auth();
   if (!session) throw new Error("You must be logged in");
 
@@ -77,4 +78,32 @@ export async function updateBookingAction(formData) {
 
   //Redirecting
   redirect("/account/reservations");
+}
+
+export async function createBookingAction(bookingData, formData) {
+  //Authentication
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  if (!bookingData.startDate || !bookingData.endDate)
+    throw new Error("You have to set a start date and an end date");
+
+  if (!formData.get("numGuests"))
+    throw new Error("You must choose number of guests");
+
+  const newBooking = {
+    ...bookingData,
+    guestId: session.user.guestId,
+    numGuests: +formData.get("numGuests"),
+    observations: formData.get("observations").slice(0, 1000),
+    extrasPrice: 0,
+    totalPrice: bookingData.cabinPrice,
+    isPaid: false,
+    hasBreakfast: false,
+    status: "unconfirmed",
+  };
+
+  await createBooking(newBooking);
+  revalidatePath(`/cabins/${bookingData.cabinId}`);
+  redirect("/cabins/thankyou");
 }
