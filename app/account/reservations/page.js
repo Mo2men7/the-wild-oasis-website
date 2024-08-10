@@ -2,7 +2,7 @@ import ReservationCard from "@/app/_components/ReservationCard";
 import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
 
-export const metadat = {
+export const metadata = {
   title: "Reservations",
 };
 
