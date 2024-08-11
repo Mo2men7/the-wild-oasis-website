@@ -53,7 +53,8 @@ export default async function Page() {
       {/* the technique to not set width and hight for the Image component */}
       <div className="relative aspect-square col-span-2">
         <Image
-          src="/about-2.jpg"
+          src="/bg.png"
+          quality={100}
           fill
           className="object-cover"
           alt="Family that manages The Wild Oasis"
